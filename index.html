@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>半導体技術 3Dモデル — Semiconductor 3D Visualizations</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@300;400;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#060a10;--card:#0c1220;--border:rgba(255,255,255,.08);--text:#e8e8e8;--dim:rgba(255,255,255,.4)}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans JP',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px}
+.header{text-align:center;margin-bottom:60px}
+.eyebrow{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:5px;color:var(--dim);text-transform:uppercase;margin-bottom:16px}
+h1{font-family:'Space Mono',monospace;font-size:clamp(1.6rem,4vw,2.8rem);font-weight:700;background:linear-gradient(135deg,#00e5ff,#76B900,#ffaa00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:12px}
+.sub{color:var(--dim);font-size:14px;font-weight:300;max-width:500px;margin:0 auto;line-height:1.8}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:900px;width:100%}
+@media(max-width:640px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px;text-decoration:none;color:var(--text);transition:all .2s;position:relative;overflow:hidden}
+.card:hover{border-color:rgba(255,255,255,.2);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.4)}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:16px 16px 0 0}
+.card-alab::before{background:linear-gradient(90deg,#00e5ff,#c77dff)}
+.card-nvda::before{background:linear-gradient(90deg,#76B900,#00aaff)}
+.card-num{font-family:'Space Mono',monospace;font-size:48px;font-weight:700;opacity:.1;margin-bottom:-8px}
+.card-title{font-size:1.2rem;font-weight:700;margin-bottom:8px}
+.card-desc{font-size:.85rem;color:var(--dim);line-height:1.7;margin-bottom:16px}
+.card-badge{font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:2px;padding:4px 10px;border-radius:4px;display:inline-block;border:1px solid;opacity:.6}
+.card-links{margin-top:16px;display:flex;gap:12px;flex-wrap:wrap}
+.card-link{font-size:.8rem;color:var(--dim);text-decoration:none;padding:6px 14px;border:1px solid var(--border);border-radius:6px;transition:all .15s}
+.card-link:hover{color:#fff;border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.05)}
+footer{margin-top:60px;font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:3px;color:var(--dim);text-align:center}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="eyebrow">SEMICONDUCTOR 3D VISUALIZATIONS</div>
+  <h1>半導体技術 3Dモデル</h1>
+  <p class="sub">半導体チップの内部構造とデータフローを<br>Three.js 3Dアニメーションで可視化するプロジェクト</p>
+</div>
+
+<div class="grid">
+  <a class="card card-alab" href="astera-labs/">
+    <div class="card-num" style="color:#00e5ff">01</div>
+    <div class="card-title">Astera Labs — Intelligent Connectivity</div>
+    <div class="card-desc">AIインフラの接続技術を支える4製品（Aries / Taurus / Scorpio / Leo）の内部動作を3Dで可視化。PCIeリタイマー、スマートケーブル、ファブリックスイッチ、CXLメモリコントローラ。</div>
+    <div class="card-badge" style="color:#00e5ff;border-color:#00e5ff">ALAB &middot; 4 PRODUCTS</div>
+  </a>
+
+  <div class="card card-nvda" style="cursor:default">
+    <div class="card-num" style="color:#76B900">02</div>
+    <div class="card-title">NVIDIA GPU — Inside the Hopper</div>
+    <div class="card-desc">NVIDIA Hopper GPUの内部アーキテクチャを3Dで解剖。SM/CUDAコア、Tensor Core行列演算、メモリ階層、GPC全体構造とNVLink通信。</div>
+    <div class="card-badge" style="color:#76B900;border-color:#76B900">NVDA &middot; 4 SUBSYSTEMS</div>
+    <div class="card-links">
+      <a class="card-link" href="nvidia-gpu/">技術者向け</a>
+      <a class="card-link" href="nvidia-gpu/general.html">一般向けガイド</a>
+    </div>
+  </div>
+</div>
+
+<footer>SEMICONDUCTOR 3D MODELS &middot; THREE.JS &middot; 2026</footer>
+
+</body>
+</html>

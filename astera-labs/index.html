@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Astera Labs — 3D Product Visualization</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@300;400;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#04080f;--panel:#070d18;--border:rgba(0,200,255,.1);
+  --aries:#00e5ff;--taurus:#00ff9d;--scorpio:#ff6b35;--leo:#c77dff;
+  --text:rgba(255,255,255,.88);--dim:rgba(255,255,255,.38);
+}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans JP','Space Mono',monospace;line-height:1.7;padding:0 20px 60px}
+.wrap{max-width:1100px;margin:0 auto}
+header{text-align:center;padding:60px 0 40px}
+.eyebrow{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:4px;color:var(--dim);margin-bottom:12px;text-transform:uppercase}
+h1{font-family:'Space Mono',monospace;font-size:clamp(28px,5vw,48px);font-weight:700;background:linear-gradient(90deg,#00e5ff,#c77dff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2;margin-bottom:10px}
+.subtitle{color:var(--dim);font-size:14px;font-weight:300}
+.product-section{margin-bottom:70px}
+.product-num{font-family:'Space Mono',monospace;font-size:60px;font-weight:700;opacity:.08;line-height:1;margin-bottom:-30px;position:relative;z-index:0}
+.product-name{font-family:'Space Mono',monospace;font-size:clamp(20px,3vw,28px);font-weight:700;position:relative;z-index:1;margin-bottom:4px}
+.product-tag{display:inline-block;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;padding:4px 12px;border-radius:4px;margin-bottom:20px;text-transform:uppercase}
+.desc-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+.desc-card{background:var(--panel);border-radius:8px;padding:16px;font-size:12px;color:var(--dim);line-height:1.8;border:1px solid var(--border)}
+.desc-card strong{display:block;font-size:11px;letter-spacing:2px;margin-bottom:6px;text-transform:uppercase}
+.cw{border-radius:12px;overflow:hidden;border:1px solid var(--border);background:#000;position:relative}
+.cw canvas{display:block;width:100%!important}
+footer{text-align:center;padding:50px 0 30px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--dim);text-transform:uppercase}
+@media(max-width:640px){
+  .review-grid{grid-template-columns:1fr}
+  .desc-grid{grid-template-columns:1fr}
+  body{padding:0 10px 40px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">ASTERA LABS &middot; ALAB &middot; NASDAQ &middot; 3D PRODUCT VISUALIZATION</div>
+  <h1>Intelligent Connectivity Platform</h1>
+  <p class="subtitle">「情報の粒」がAIインフラを旅する — 全4製品 Three.js 3Dアニメーション</p>
+</header>
+
+
+<!-- ============ 01 ARIES ============ -->
+<div class="product-section" id="s-aries">
+  <div class="product-num" style="color:var(--aries)">01</div>
+  <div class="product-name" style="color:var(--aries)">ARIES PCIe Retimer</div>
+  <div class="product-tag" style="background:rgba(0,229,255,.1);color:var(--aries);border:1px solid rgba(0,229,255,.25)">SIGNAL RESTORATION</div>
+  <div class="desc-grid">
+    <div class="desc-card" style="border-color:rgba(0,229,255,.15)">
+      <strong style="color:var(--aries)">3Dメタファー</strong>
+      PCB上のPCIeトレース（金色の線）を信号粒子が移動。左半分でノイズを纏いながら縮退し、チップパッケージ（中央）で完全再生→右半分で輝きながら到達。
+    </div>
+    <div class="desc-card" style="border-color:rgba(0,229,255,.15)">
+      <strong style="color:var(--aries)">実際の機能</strong>
+      PCIe差動ペア信号をボード中間でリタイミング（再整列・再増幅）。長距離配線でも信号品質をゼロ劣化に保つ。AIサーバーのGPU-CPU間接続に不可欠。
+    </div>
+  </div>
+  <div class="cw" style="height:300px;border-color:rgba(0,229,255,.15)"><canvas id="c-aries"></canvas></div>
+</div>
+
+<!-- ============ 02 TAURUS ============ -->
+<div class="product-section" id="s-taurus">
+  <div class="product-num" style="color:var(--taurus)">02</div>
+  <div class="product-name" style="color:var(--taurus)">TAURUS Smart Cable Module</div>
+  <div class="product-tag" style="background:rgba(0,255,157,.1);color:var(--taurus);border:1px solid rgba(0,255,157,.25)">SCALE-OUT ETHERNET</div>
+  <div class="desc-grid">
+    <div class="desc-card" style="border-color:rgba(0,255,157,.15)">
+      <strong style="color:var(--taurus)">3Dメタファー</strong>
+      5台のサーバーラック間を弧を描くケーブルが繋ぎ、中点に光る球＋回転リング（スマートノード）。データ粒子がケーブル上を流れ、ノード通過で増幅される。
+    </div>
+    <div class="desc-card" style="border-color:rgba(0,255,157,.15)">
+      <strong style="color:var(--taurus)">実際の機能</strong>
+      EthernetでAIサーバー群を横展開するSCM。ケーブルモジュール内蔵ASICが信号品質・電力を自律最適化。大規模AIクラスタの必須インフラ。
+    </div>
+  </div>
+  <div class="cw" style="height:330px;border-color:rgba(0,255,157,.15)"><canvas id="c-taurus"></canvas></div>
+</div>
+
+<!-- ============ 03 SCORPIO ============ -->
+<div class="product-section" id="s-scorpio">
+  <div class="product-num" style="color:var(--scorpio)">03</div>
+  <div class="product-name" style="color:var(--scorpio)">SCORPIO Smart Fabric Switch</div>
+  <div class="product-tag" style="background:rgba(255,107,53,.1);color:var(--scorpio);border:1px solid rgba(255,107,53,.25)">SCALE-UP AI FABRIC + HYPERCAST</div>
+  <div class="desc-grid">
+    <div class="desc-card" style="border-color:rgba(255,107,53,.15)">
+      <strong style="color:var(--scorpio)">3Dメタファー</strong>
+      中央のファブリックスイッチから8基のGPUへ放射状接続。通常ルートは1対1転送、Hypercastは中央で粒子が分裂し3つのGPUへ同時到達。
+    </div>
+    <div class="desc-card" style="border-color:rgba(255,107,53,.15)">
+      <strong style="color:var(--scorpio)">実際の機能</strong>
+      PCIeファブリックスイッチでGPU間を低遅延接続。Hypercast機能により、1回の送信で複数GPUへ同報配信。AIトレーニングの通信ボトルネックを解消。
+    </div>
+  </div>
+  <div class="cw" style="height:360px;border-color:rgba(255,107,53,.15)"><canvas id="c-scorpio"></canvas></div>
+</div>
+
+<!-- ============ 04 LEO ============ -->
+<div class="product-section" id="s-leo">
+  <div class="product-num" style="color:var(--leo)">04</div>
+  <div class="product-name" style="color:var(--leo)">LEO CXL Smart Memory Controller</div>
+  <div class="product-tag" style="background:rgba(199,125,255,.1);color:var(--leo);border:1px solid rgba(199,125,255,.25)">CXL MEMORY EXPANSION</div>
+  <div class="desc-grid">
+    <div class="desc-card" style="border-color:rgba(199,125,255,.15)">
+      <strong style="color:var(--leo)">3Dメタファー</strong>
+      CPU（左）からCXLバス経由でLeoコントローラー（中央）へ、さらに拡張メモリバンク（右）へ。DIMMスティックの積層構造とメモリ充填アニメーション。
+    </div>
+    <div class="desc-card" style="border-color:rgba(199,125,255,.15)">
+      <strong style="color:var(--leo)">実際の機能</strong>
+      CXLプロトコルでメモリプールを拡張。CPUのメモリ帯域制限を打破し、大規模AIモデルの学習・推論に必要な巨大メモリ空間を提供。
+    </div>
+  </div>
+  <div class="cw" style="height:330px;border-color:rgba(199,125,255,.15)"><canvas id="c-leo"></canvas></div>
+</div>
+
+<footer>ASTERA LABS &middot; INTELLIGENT CONNECTIVITY PLATFORM &middot; THREE.JS r128 &middot; 3D PARTICLE VISUALIZATION &middot; 2026</footer>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+  onerror="var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js';s.onerror=function(){document.body.innerHTML='<div style=\'color:red;padding:40px;font-size:18px\'>Three.js の読み込みに失敗しました。インターネット接続を確認してください。</div>'};document.head.appendChild(s)"></script>
+
+<script>
+window.addEventListener('load', function(){
+(function(){
+  "use strict";
+
+  /* ── Utilities ── */
+  function lerp(a,b,t){return a+(b-a)*t}
+  function clamp(v,lo,hi){return Math.max(lo,Math.min(hi,v))}
+  function rnd(a,b){return Math.random()*(b-a)+a}
+  function rndInt(a,b){return Math.floor(rnd(a,b+1))}
+
+  /* ── Shared glow texture ── */
+  var glowCanvas = document.createElement('canvas');
+  glowCanvas.width = 64; glowCanvas.height = 64;
+  var gctx = glowCanvas.getContext('2d');
+  var grad = gctx.createRadialGradient(32,32,0,32,32,32);
+  grad.addColorStop(0,'rgba(255,255,255,1)');
+  grad.addColorStop(0.3,'rgba(255,255,255,0.6)');
+  grad.addColorStop(0.7,'rgba(255,255,255,0.15)');
+  grad.addColorStop(1,'rgba(255,255,255,0)');
+  gctx.fillStyle = grad;
+  gctx.fillRect(0,0,64,64);
+  var glowTex = new THREE.CanvasTexture(glowCanvas);
+
+  function makeGlow(color, opacity, size){
+    var mat = new THREE.SpriteMaterial({map:glowTex, color:color, transparent:true, opacity:opacity, blending:THREE.AdditiveBlending, depthWrite:false});
+    var sp = new THREE.Sprite(mat);
+    sp.scale.set(size,size,1);
+    return sp;
+  }
+
+  function makePair(color, radius){
+    var geo = new THREE.SphereGeometry(radius, 12, 12);
+    var mat = new THREE.MeshStandardMaterial({color:color, emissive:color, emissiveIntensity:0.8, roughness:0.3, metalness:0.5});
+    var mesh = new THREE.Mesh(geo, mat);
+    var glow = makeGlow(color, 1.0, radius*7);
+    mesh.add(glow);
+    return {mesh:mesh, glow:glow};
+  }
+
+  /* ── Renderer setup ── */
+  function setupRenderer(id){
+    var canvas = document.getElementById(id);
+    var parent = canvas.parentElement;
+    var w = parent.clientWidth || 800;
+    var h = parent.clientHeight || 300;
+    var renderer = new THREE.WebGLRenderer({canvas:canvas, antialias:true, alpha:false});
+    renderer.setSize(w, h);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    return {renderer:renderer, w:w, h:h};
+  }
+
+  /* ── Update registry ── */
+  var UPDATES = {};
+  var lastTime = performance.now();
+  function tick(){
+    requestAnimationFrame(tick);
+    var now = performance.now();
+    var dt = Math.min((now - lastTime)/1000, 0.05);
+    lastTime = now;
+    for(var k in UPDATES) UPDATES[k](dt);
+  }
+  tick();
+
+  /* ── Resize handler ── */
+  window.addEventListener('resize', function(){
+    ['c-aries','c-taurus','c-scorpio','c-leo'].forEach(function(id){
+      var canvas = document.getElementById(id);
+      if(!canvas) return;
+      var parent = canvas.parentElement;
+      var w = parent.clientWidth;
+      var h = parent.clientHeight;
+      if(canvas._renderer){
+        canvas._renderer.setSize(w,h);
+      }
+      if(canvas._camera){
+        canvas._camera.aspect = w/h;
+        canvas._camera.updateProjectionMatrix();
+      }
+    });
+  });
+
+  /* ================================================================
+     SCENE 01: ARIES PCIe Retimer
+     ================================================================ */
+  (function(){
+    var r = setupRenderer('c-aries');
+    var renderer = r.renderer; var W = r.w; var H = r.h;
+    var canvas = document.getElementById('c-aries');
+    canvas._renderer = renderer;
+
+    var scene = new THREE.Scene();
+    scene.background = new THREE.Color('#0f2030');
+
+    var camera = new THREE.PerspectiveCamera(50, W/H, 0.1, 100);
+    camera.position.set(0, 2.5, 4.5);
+    camera.lookAt(0, 0, 0);
+    canvas._camera = camera;
+
+    /* Lights */
+    var amb = new THREE.AmbientLight('#6688aa', 1.5);
+    scene.add(amb);
+    var dir1 = new THREE.DirectionalLight('#ffffff', 1.0);
+    dir1.position.set(5, 8, 5);
+    scene.add(dir1);
+    var dir2 = new THREE.DirectionalLight('#4488cc', 0.6);
+    dir2.position.set(-3, 4, -3);
+    scene.add(dir2);
+    var chipLight = new THREE.PointLight('#00e5ff', 8, 8);
+    chipLight.position.set(0, 0.6, 0);
+    scene.add(chipLight);
+
+    /* Grid */
+    var grid = new THREE.GridHelper(20, 40, '#004466', '#002233');
+    grid.position.y = -0.08;
+    scene.add(grid);
+
+    /* PCB Board */
+    var pcbGeo = new THREE.BoxGeometry(13, 0.14, 3.2);
+    var pcbMat = new THREE.MeshStandardMaterial({color:'#2a5530', roughness:0.7, metalness:0.1});
+    var pcb = new THREE.Mesh(pcbGeo, pcbMat);
+    pcb.position.y = 0;
+    scene.add(pcb);
+
+    /* Gold traces - 5 lanes */
+    var laneZ = [-0.9, -0.45, 0, 0.45, 0.9];
+    var traceMat = new THREE.MeshStandardMaterial({color:'#e0b830', emissive:'#604000', emissiveIntensity:0.4, metalness:0.9, roughness:0.2});
+    laneZ.forEach(function(z){
+      var tGeo = new THREE.BoxGeometry(12, 0.02, 0.06);
+      var t = new THREE.Mesh(tGeo, traceMat);
+      t.position.set(0, 0.08, z);
+      scene.add(t);
+    });
+
+    /* Edge connectors */
+    [-6.1, 6.1].forEach(function(x){
+      var cBody = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.5, 2.8), new THREE.MeshStandardMaterial({color:'#444444', roughness:0.6}));
+      cBody.position.set(x, 0.2, 0);
+      scene.add(cBody);
+      for(var i = 0; i < 8; i++){
+        var pin = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.3, 0.04), new THREE.MeshStandardMaterial({color:'#ccaa33', metalness:0.9}));
+        pin.position.set(x, 0.05, -1.0 + i * 0.28);
+        scene.add(pin);
+      }
+    });
+
+    /* Central Aries chip */
+    var chipPkg = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.18, 1.4), new THREE.MeshStandardMaterial({color:'#1a2a44', roughness:0.4}));
+    chipPkg.position.set(0, 0.16, 0);
+    scene.add(chipPkg);
+
+    var chipDie = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.06, 0.8), new THREE.MeshStandardMaterial({color:'#2244aa', emissive:'#003388', emissiveIntensity:0.5, roughness:0.2}));
+    chipDie.position.set(0, 0.28, 0);
+    scene.add(chipDie);
+
+    /* BGA bumps */
+    var bumpGeo = new THREE.SphereGeometry(0.03, 6, 6);
+    var bumpMat = new THREE.MeshStandardMaterial({color:'#ccaa33', metalness:0.9});
+    for(var bx = -0.5; bx <= 0.5; bx += 0.2){
+      for(var bz = -0.5; bz <= 0.5; bz += 0.2){
+        var bump = new THREE.Mesh(bumpGeo, bumpMat);
+        bump.position.set(bx, 0.04, bz);
+        scene.add(bump);
+      }
+    }
+
+    /* Cyan frame around chip */
+    var frameGeo = new THREE.EdgesGeometry(new THREE.BoxGeometry(1.6, 0.3, 1.6));
+    var frameMat = new THREE.LineBasicMaterial({color:'#00e5ff', transparent:true, opacity:0.7});
+    var frame = new THREE.LineSegments(frameGeo, frameMat);
+    frame.position.set(0, 0.2, 0);
+    scene.add(frame);
+
+    /* Chip glow */
+    var chipGlow = makeGlow('#00e5ff', 0.9, 3.5);
+    chipGlow.position.set(0, 0.4, 0);
+    scene.add(chipGlow);
+
+    /* Zone overlays */
+    var zoneLeft = new THREE.Mesh(new THREE.PlaneGeometry(6, 3.2), new THREE.MeshBasicMaterial({color:'#ff2222', transparent:true, opacity:0.03, side:THREE.DoubleSide}));
+    zoneLeft.rotation.x = -Math.PI/2;
+    zoneLeft.position.set(-3.2, 0.09, 0);
+    scene.add(zoneLeft);
+    var zoneRight = new THREE.Mesh(new THREE.PlaneGeometry(6, 3.2), new THREE.MeshBasicMaterial({color:'#00e5ff', transparent:true, opacity:0.03, side:THREE.DoubleSide}));
+    zoneRight.rotation.x = -Math.PI/2;
+    zoneRight.position.set(3.2, 0.09, 0);
+    scene.add(zoneRight);
+
+    /* Particles */
+    var particles = [];
+    var spawnTimer = 0;
+
+    function spawnParticle(){
+      var lane = laneZ[rndInt(0, 4)];
+      var pair = makePair('#00e5ff', 0.15);
+      pair.mesh.position.set(-5.5, 0.3, lane);
+      scene.add(pair.mesh);
+      /* noise orbiters */
+      var noises = [];
+      for(var i = 0; i < 4; i++){
+        var nGeo = new THREE.SphereGeometry(0.06, 6, 6);
+        var nMat = new THREE.MeshStandardMaterial({color:'#22bbdd', emissive:'#22bbdd', emissiveIntensity:0.6});
+        var n = new THREE.Mesh(nGeo, nMat);
+        pair.mesh.add(n);
+        noises.push({mesh:n, angle:i*Math.PI/2, speed:rnd(3,5)});
+      }
+      particles.push({pair:pair, x:-5.5, lane:lane, noises:noises, speed:rnd(2.5,3.5)});
+    }
+
+    var camAngle = 0;
+    UPDATES['aries'] = function(dt){
+      spawnTimer += dt;
+      if(spawnTimer > 0.44){ spawnTimer = 0; spawnParticle(); }
+
+      for(var i = particles.length - 1; i >= 0; i--){
+        var p = particles[i];
+        p.x += p.speed * dt;
+        p.pair.mesh.position.x = p.x;
+        p.pair.mesh.position.y = 0.3;
+
+        var norm = (p.x + 5.5) / 11; /* 0..1 */
+        var chipNorm = 0.5;
+        if(norm < chipNorm){
+          /* pre-chip: shrink and dim */
+          var fade = 1.0 - norm * 1.5;
+          fade = clamp(fade, 0.15, 1.0);
+          var sc = clamp(fade, 0.3, 1.0);
+          p.pair.mesh.scale.setScalar(sc);
+          p.pair.mesh.material.emissiveIntensity = fade * 0.8;
+          p.pair.glow.material.opacity = fade;
+          /* show noise */
+          p.noises.forEach(function(n){
+            n.angle += n.speed * dt;
+            n.mesh.visible = true;
+            var r2 = 0.25 * sc;
+            n.mesh.position.set(Math.cos(n.angle)*r2, Math.sin(n.angle)*r2, 0);
+          });
+        } else if(norm < 0.55){
+          /* at chip */
+          p.pair.mesh.scale.setScalar(0.2);
+          p.pair.glow.material.opacity = 0.1;
+          p.noises.forEach(function(n){ n.mesh.visible = false; });
+        } else {
+          /* post-chip: restored */
+          var grow = clamp((norm - 0.55) / 0.3, 0, 1);
+          p.pair.mesh.scale.setScalar(0.5 + grow * 0.7);
+          p.pair.mesh.material.emissiveIntensity = 0.5 + grow * 0.5;
+          p.pair.glow.material.opacity = 0.5 + grow * 0.5;
+          p.noises.forEach(function(n){ n.mesh.visible = false; });
+        }
+
+        if(p.x > 6.0){
+          scene.remove(p.pair.mesh);
+          particles.splice(i, 1);
+        }
+      }
+
+      camAngle += dt * 0.15;
+      camera.position.x = Math.sin(camAngle) * 4.5;
+      camera.position.z = Math.cos(camAngle) * 4.5;
+      camera.position.y = 2.5;
+      camera.lookAt(0, 0, 0);
+
+      renderer.render(scene, camera);
+    };
+  })();
+
+  /* ================================================================
+     SCENE 02: TAURUS Smart Cable Module
+     ================================================================ */
+  (function(){
+    var r = setupRenderer('c-taurus');
+    var renderer = r.renderer; var W = r.w; var H = r.h;
+    var canvas = document.getElementById('c-taurus');
+    canvas._renderer = renderer;
+
+    var scene = new THREE.Scene();
+    scene.background = new THREE.Color('#0a2015');
+
+    var camera = new THREE.PerspectiveCamera(50, W/H, 0.1, 100);
+    camera.position.set(0, 5, 8);
+    camera.lookAt(0, 0, 0);
+    canvas._camera = camera;
+
+    var amb = new THREE.AmbientLight('#448855', 1.5);
+    scene.add(amb);
+    var dir1 = new THREE.DirectionalLight('#ffffff', 1.0);
+    dir1.position.set(5, 8, 5);
+    scene.add(dir1);
+    var dir2 = new THREE.DirectionalLight('#33aa55', 0.5);
+    dir2.position.set(-3, 4, -3);
+    scene.add(dir2);
+
+    var grid = new THREE.GridHelper(20, 40, '#008844', '#004422');
+    grid.position.y = -0.01;
+    scene.add(grid);
+
+    /* 5 Server Racks */
+    var rackPositions = [
+      new THREE.Vector3(-3.5, 0, -2.5),
+      new THREE.Vector3(3.5, 0, -2.5),
+      new THREE.Vector3(-3.5, 0, 2.5),
+      new THREE.Vector3(3.5, 0, 2.5),
+      new THREE.Vector3(0, 0, 0)
+    ];
+
+    rackPositions.forEach(function(pos){
+      /* Rack body */
+      var body = new THREE.Mesh(new THREE.BoxGeometry(1.2, 2.0, 0.8), new THREE.MeshStandardMaterial({color:'#3a5a3a', roughness:0.6}));
+      body.position.set(pos.x, 1.0, pos.z);
+      scene.add(body);
+      /* Front panel */
+      var front = new THREE.Mesh(new THREE.BoxGeometry(1.1, 1.8, 0.02), new THREE.MeshStandardMaterial({color:'#3a3a3a', roughness:0.5}));
+      front.position.set(pos.x, 1.0, pos.z + 0.4);
+      scene.add(front);
+      /* Slot lines */
+      for(var sl = 0; sl < 6; sl++){
+        var slotLine = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.01, 0.01), new THREE.MeshStandardMaterial({color:'#222222'}));
+        slotLine.position.set(pos.x, 0.35 + sl * 0.28, pos.z + 0.42);
+        scene.add(slotLine);
+      }
+      /* LEDs */
+      var ledColors = ['#00ff66','#00ff66','#ffaa00','#00ff66'];
+      ledColors.forEach(function(c, idx){
+        var led = new THREE.Mesh(new THREE.SphereGeometry(0.03, 8, 8), new THREE.MeshStandardMaterial({color:c, emissive:c, emissiveIntensity:1.0}));
+        led.position.set(pos.x + 0.35, 1.7, pos.z + 0.42);
+        led.position.x -= idx * 0.08;
+        scene.add(led);
+        var ledGlow = makeGlow(c, 0.6, 0.2);
+        led.add(ledGlow);
+      });
+      /* Point light */
+      var pl = new THREE.PointLight('#00ff9d', 1.5, 5);
+      pl.position.set(pos.x, 2.2, pos.z);
+      scene.add(pl);
+    });
+
+    /* Cable connections */
+    var cableConns = [
+      [0,4],[1,4],[2,4],[3,4],[0,1],[2,3],[0,2],[1,3]
+    ];
+    var cables = [];
+    var smartNodes = [];
+
+    cableConns.forEach(function(pair){
+      var a = rackPositions[pair[0]];
+      var b = rackPositions[pair[1]];
+      var mid = new THREE.Vector3((a.x+b.x)/2, rnd(2.0, 3.2), (a.z+b.z)/2);
+      var curve = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(a.x, 2.0, a.z),
+        mid,
+        new THREE.Vector3(b.x, 2.0, b.z)
+      ]);
+      var tubeGeo = new THREE.TubeGeometry(curve, 32, 0.04, 8, false);
+      var tubeMat = new THREE.MeshStandardMaterial({color:'#00cc77', emissive:'#00cc77', emissiveIntensity:0.3, transparent:true, opacity:0.7, blending:THREE.AdditiveBlending});
+      var tube = new THREE.Mesh(tubeGeo, tubeMat);
+      scene.add(tube);
+
+      /* Smart node at midpoint */
+      var nodePos = curve.getPoint(0.5);
+      var nodeSphere = new THREE.Mesh(new THREE.SphereGeometry(0.18, 16, 16), new THREE.MeshStandardMaterial({color:'#00ff9d', emissive:'#00ff9d', emissiveIntensity:0.8}));
+      nodeSphere.position.copy(nodePos);
+      scene.add(nodeSphere);
+      var nodeGlow = makeGlow('#00ff9d', 0.9, 0.8);
+      nodeSphere.add(nodeGlow);
+      var torusGeo = new THREE.TorusGeometry(0.25, 0.02, 8, 24);
+      var torusMat = new THREE.MeshStandardMaterial({color:'#00ff9d', emissive:'#00ff9d', emissiveIntensity:0.5, transparent:true, opacity:0.7});
+      var torus = new THREE.Mesh(torusGeo, torusMat);
+      torus.position.copy(nodePos);
+      scene.add(torus);
+      smartNodes.push(torus);
+
+      cables.push({curve:curve});
+    });
+
+    /* Particles */
+    var tParticles = [];
+    var tSpawnTimer = 0;
+
+    function spawnTaurusParticle(){
+      var ci = rndInt(0, cables.length - 1);
+      var cable = cables[ci];
+      var pair = makePair('#00ff9d', 0.15);
+      scene.add(pair.mesh);
+      tParticles.push({pair:pair, curve:cable.curve, t:0, speed:rnd(0.3, 0.6)});
+    }
+
+    var tCamAngle = 0;
+    UPDATES['taurus'] = function(dt){
+      tSpawnTimer += dt;
+      if(tSpawnTimer > 0.38){ tSpawnTimer = 0; spawnTaurusParticle(); }
+
+      /* Rotate smart nodes */
+      smartNodes.forEach(function(t){ t.rotation.x += dt * 2; t.rotation.y += dt * 1.5; });
+
+      for(var i = tParticles.length - 1; i >= 0; i--){
+        var p = tParticles[i];
+        p.t += p.speed * dt;
+        if(p.t >= 1.0){
+          scene.remove(p.pair.mesh);
+          tParticles.splice(i, 1);
+          continue;
+        }
+        var pos = p.curve.getPoint(p.t);
+        p.pair.mesh.position.copy(pos);
+        /* Brighten near midpoint */
+        var midDist = Math.abs(p.t - 0.5);
+        var bright = 1.0 - midDist * 1.5;
+        bright = clamp(bright, 0.4, 1.0);
+        p.pair.mesh.material.emissiveIntensity = bright;
+        p.pair.glow.material.opacity = bright;
+      }
+
+      tCamAngle += dt * 0.12;
+      camera.position.x = Math.sin(tCamAngle) * 8;
+      camera.position.z = Math.cos(tCamAngle) * 8;
+      camera.position.y = 5;
+      camera.lookAt(0, 1, 0);
+
+      renderer.render(scene, camera);
+    };
+  })();
+
+  /* ================================================================
+     SCENE 03: SCORPIO Smart Fabric Switch
+     ================================================================ */
+  (function(){
+    var r = setupRenderer('c-scorpio');
+    var renderer = r.renderer; var W = r.w; var H = r.h;
+    var canvas = document.getElementById('c-scorpio');
+    canvas._renderer = renderer;
+
+    var scene = new THREE.Scene();
+    scene.background = new THREE.Color('#1a0e08');
+
+    var camera = new THREE.PerspectiveCamera(50, W/H, 0.1, 100);
+    camera.position.set(0, 4.5, 8);
+    camera.lookAt(0, 0, 0);
+    canvas._camera = camera;
+
+    var amb = new THREE.AmbientLight('#664433', 1.5);
+    scene.add(amb);
+    var dir1 = new THREE.DirectionalLight('#ffffff', 1.0);
+    dir1.position.set(5, 8, 5);
+    scene.add(dir1);
+    var dir2 = new THREE.DirectionalLight('#ff8844', 0.6);
+    dir2.position.set(-3, 4, -3);
+    scene.add(dir2);
+    var centerPt = new THREE.PointLight('#ffaa44', 10, 10);
+    centerPt.position.set(0, 1, 0);
+    scene.add(centerPt);
+
+    var grid = new THREE.GridHelper(20, 40, '#442200', '#221100');
+    grid.position.y = -0.01;
+    scene.add(grid);
+
+    /* Central switch */
+    var switchBody = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.3, 1.6), new THREE.MeshStandardMaterial({color:'#2a1a10', roughness:0.4}));
+    switchBody.position.set(0, 0.15, 0);
+    scene.add(switchBody);
+    var heatspreader = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.08, 1.2), new THREE.MeshStandardMaterial({color:'#555555', metalness:0.8, roughness:0.3}));
+    heatspreader.position.set(0, 0.34, 0);
+    scene.add(heatspreader);
+
+    /* Orange port pins on 4 sides */
+    for(var side = 0; side < 4; side++){
+      for(var pp = 0; pp < 5; pp++){
+        var pin = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.1, 0.04), new THREE.MeshStandardMaterial({color:'#ff6b35', emissive:'#ff6b35', emissiveIntensity:0.5}));
+        var angle = side * Math.PI/2;
+        var offset = -0.4 + pp * 0.2;
+        if(side === 0){ pin.position.set(offset, 0.15, 0.85); }
+        else if(side === 1){ pin.position.set(offset, 0.15, -0.85); }
+        else if(side === 2){ pin.position.set(0.85, 0.15, offset); }
+        else { pin.position.set(-0.85, 0.15, offset); }
+        scene.add(pin);
+      }
+    }
+
+    /* 3 rotating torus rings */
+    var switchToruses = [];
+    [0.9, 1.1, 1.3].forEach(function(rad, idx){
+      var t = new THREE.Mesh(new THREE.TorusGeometry(rad, 0.015, 8, 48), new THREE.MeshStandardMaterial({color:'#ff6b35', emissive:'#ff6b35', emissiveIntensity:0.6, transparent:true, opacity:0.6}));
+      t.position.set(0, 0.3, 0);
+      t.rotation.x = Math.PI/2 + idx * 0.3;
+      scene.add(t);
+      switchToruses.push(t);
+    });
+
+    /* Central glow */
+    var cGlow = makeGlow('#ff6b35', 1.0, 4.0);
+    cGlow.position.set(0, 0.4, 0);
+    scene.add(cGlow);
+
+    /* 8 GPUs in circle */
+    var gpuPositions = [];
+    for(var gi = 0; gi < 8; gi++){
+      var ga = gi * Math.PI * 2 / 8;
+      var gx = Math.cos(ga) * 3.8;
+      var gz = Math.sin(ga) * 3.8;
+      var gy = (gi % 2 === 0) ? 0.35 : -0.35;
+      gpuPositions.push(new THREE.Vector3(gx, gy, gz));
+
+      var gpuBody = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.2, 0.8), new THREE.MeshStandardMaterial({color:'#2a2a2a', roughness:0.5}));
+      gpuBody.position.set(gx, gy, gz);
+      scene.add(gpuBody);
+      var gpuDie = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.06, 0.5), new THREE.MeshStandardMaterial({color:'#443322', emissive:'#332211', emissiveIntensity:0.3}));
+      gpuDie.position.set(gx, gy + 0.13, gz);
+      scene.add(gpuDie);
+      var gpuLed = new THREE.Mesh(new THREE.SphereGeometry(0.04, 8, 8), new THREE.MeshStandardMaterial({color:'#ff6b35', emissive:'#ff6b35', emissiveIntensity:1.0}));
+      gpuLed.position.set(gx + 0.3, gy + 0.15, gz);
+      scene.add(gpuLed);
+      gpuLed.add(makeGlow('#ff6b35', 0.7, 0.3));
+
+      /* Spoke line */
+      var spokeGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(gx, gy, gz), new THREE.Vector3(0, 0.15, 0)]);
+      var spokeMat = new THREE.LineBasicMaterial({color:'#ff6b35', transparent:true, opacity:0.2});
+      scene.add(new THREE.Line(spokeGeo, spokeMat));
+    }
+
+    /* Particles */
+    var sParticles = [];
+    var sSpawnTimer = 0;
+
+    function spawnScorpioParticle(){
+      var srcIdx = rndInt(0, 7);
+      var isHypercast = Math.random() < 0.3;
+      var color = isHypercast ? '#ffcc44' : '#ff6b35';
+      var radius = isHypercast ? 0.18 : 0.16;
+      var pair = makePair(color, radius);
+      var src = gpuPositions[srcIdx];
+      pair.mesh.position.copy(src);
+      scene.add(pair.mesh);
+
+      if(isHypercast){
+        /* pick 3 different target GPUs */
+        var targets = [];
+        while(targets.length < 3){
+          var t = rndInt(0, 7);
+          if(t !== srcIdx && targets.indexOf(t) === -1) targets.push(t);
+        }
+        sParticles.push({pair:pair, src:src.clone(), phase:0, t:0, speed:rnd(0.8,1.2), hyper:true, targets:targets, children:[]});
+      } else {
+        var tgtIdx = rndInt(0, 7);
+        while(tgtIdx === srcIdx) tgtIdx = rndInt(0, 7);
+        sParticles.push({pair:pair, src:src.clone(), tgt:gpuPositions[tgtIdx].clone(), phase:0, t:0, speed:rnd(0.8,1.2), hyper:false});
+      }
+    }
+
+    var sCamAngle = 0;
+    UPDATES['scorpio'] = function(dt){
+      sSpawnTimer += dt;
+      if(sSpawnTimer > 0.38){ sSpawnTimer = 0; spawnScorpioParticle(); }
+
+      /* Rotate switch toruses */
+      switchToruses.forEach(function(t, idx){
+        t.rotation.z += dt * (1.0 + idx * 0.5);
+      });
+
+      for(var i = sParticles.length - 1; i >= 0; i--){
+        var p = sParticles[i];
+        p.t += p.speed * dt;
+
+        if(!p.hyper){
+          /* Normal route */
+          if(p.phase === 0){
+            /* GPU -> center */
+            var prog = clamp(p.t, 0, 1);
+            p.pair.mesh.position.lerpVectors(p.src, new THREE.Vector3(0, 0.3, 0), prog);
+            if(p.t >= 1.0){ p.phase = 1; p.t = 0; }
+          } else {
+            var prog2 = clamp(p.t, 0, 1);
+            p.pair.mesh.position.lerpVectors(new THREE.Vector3(0, 0.3, 0), p.tgt, prog2);
+            if(p.t >= 1.0){
+              scene.remove(p.pair.mesh);
+              sParticles.splice(i, 1);
+            }
+          }
+        } else {
+          /* Hypercast */
+          if(p.phase === 0){
+            var prog3 = clamp(p.t, 0, 1);
+            p.pair.mesh.position.lerpVectors(p.src, new THREE.Vector3(0, 0.3, 0), prog3);
+            if(p.t >= 1.0){
+              p.phase = 1; p.t = 0;
+              scene.remove(p.pair.mesh);
+              /* Spawn 3 children */
+              p.targets.forEach(function(tIdx){
+                var child = makePair('#ffcc44', 0.14);
+                child.mesh.position.set(0, 0.3, 0);
+                scene.add(child.mesh);
+                p.children.push({pair:child, tgt:gpuPositions[tIdx].clone()});
+              });
+            }
+          } else {
+            var prog4 = clamp(p.t, 0, 1);
+            var allDone = true;
+            p.children.forEach(function(ch){
+              ch.pair.mesh.position.lerpVectors(new THREE.Vector3(0, 0.3, 0), ch.tgt, prog4);
+            });
+            if(p.t >= 1.0){
+              p.children.forEach(function(ch){ scene.remove(ch.pair.mesh); });
+              sParticles.splice(i, 1);
+            }
+          }
+        }
+      }
+
+      sCamAngle += dt * 0.12;
+      camera.position.x = Math.sin(sCamAngle) * 8;
+      camera.position.z = Math.cos(sCamAngle) * 8;
+      camera.position.y = 4.5;
+      camera.lookAt(0, 0, 0);
+
+      renderer.render(scene, camera);
+    };
+  })();
+
+  /* ================================================================
+     SCENE 04: LEO CXL Smart Memory Controller
+     ================================================================ */
+  (function(){
+    var r = setupRenderer('c-leo');
+    var renderer = r.renderer; var W = r.w; var H = r.h;
+    var canvas = document.getElementById('c-leo');
+    canvas._renderer = renderer;
+
+    var scene = new THREE.Scene();
+    scene.background = new THREE.Color('#120a22');
+
+    var camera = new THREE.PerspectiveCamera(50, W/H, 0.1, 100);
+    camera.position.set(0.5, 3, 7);
+    camera.lookAt(0.5, 0.4, 0);
+    canvas._camera = camera;
+
+    var amb = new THREE.AmbientLight('#554477', 1.5);
+    scene.add(amb);
+    var dir1 = new THREE.DirectionalLight('#ffffff', 1.0);
+    dir1.position.set(5, 8, 5);
+    scene.add(dir1);
+    var dir2 = new THREE.DirectionalLight('#9955ff', 0.6);
+    dir2.position.set(-3, 4, -3);
+    scene.add(dir2);
+
+    var cpuLight = new THREE.PointLight('#4488ff', 5, 8);
+    cpuLight.position.set(-3.5, 1, 0);
+    scene.add(cpuLight);
+    var leoLight = new THREE.PointLight('#9955ff', 5, 8);
+    leoLight.position.set(0, 1, 0);
+    scene.add(leoLight);
+    var memLight = new THREE.PointLight('#ff55aa', 4, 8);
+    memLight.position.set(4.2, 1, 0);
+    scene.add(memLight);
+
+    var grid = new THREE.GridHelper(20, 40, '#330066', '#1a0040');
+    grid.position.y = -0.01;
+    scene.add(grid);
+
+    /* CPU chip */
+    var cpuPkg = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.18, 1.4), new THREE.MeshStandardMaterial({color:'#1a2244', roughness:0.4}));
+    cpuPkg.position.set(-3.5, 0.09, 0);
+    scene.add(cpuPkg);
+    var cpuDie = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.08, 0.8), new THREE.MeshStandardMaterial({color:'#2244cc', emissive:'#2244cc', emissiveIntensity:0.5}));
+    cpuDie.position.set(-3.5, 0.22, 0);
+    scene.add(cpuDie);
+    /* CPU BGA bumps */
+    var bGeo2 = new THREE.SphereGeometry(0.03, 6, 6);
+    var bMat2 = new THREE.MeshStandardMaterial({color:'#ccaa33', metalness:0.9});
+    for(var bx2 = -0.4; bx2 <= 0.4; bx2 += 0.2){
+      for(var bz2 = -0.4; bz2 <= 0.4; bz2 += 0.2){
+        var b2 = new THREE.Mesh(bGeo2, bMat2);
+        b2.position.set(-3.5+bx2, -0.02, bz2);
+        scene.add(b2);
+      }
+    }
+    var cpuGlow = makeGlow('#4488ff', 0.8, 2.5);
+    cpuGlow.position.set(-3.5, 0.4, 0);
+    scene.add(cpuGlow);
+
+    /* Local DIMMs near CPU */
+    function makeDIMM(x, y, z, color){
+      var dimmPcb = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.5, 0.1), new THREE.MeshStandardMaterial({color:color, roughness:0.6}));
+      dimmPcb.position.set(x, y, z);
+      scene.add(dimmPcb);
+      /* chips on DIMM */
+      for(var ci2 = 0; ci2 < 3; ci2++){
+        var chip = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.04, 0.12), new THREE.MeshStandardMaterial({color:'#222222'}));
+        chip.position.set(x - 0.18 + ci2*0.18, y + 0.05, z);
+        scene.add(chip);
+      }
+      /* gold edge connector */
+      var edge = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.06, 0.02), new THREE.MeshStandardMaterial({color:'#ccaa33', metalness:0.9}));
+      edge.position.set(x, y - 0.28, z);
+      scene.add(edge);
+    }
+
+    makeDIMM(-2.1, 0.65, 0.55, '#2a5520');
+    makeDIMM(-2.1, 0.65, -0.55, '#2a5520');
+
+    /* Leo controller */
+    var leoPkg = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.18, 1.2), new THREE.MeshStandardMaterial({color:'#2a1a3a', roughness:0.4}));
+    leoPkg.position.set(0, 0.09, 0);
+    scene.add(leoPkg);
+    var leoDie = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.08, 0.7), new THREE.MeshStandardMaterial({color:'#7733cc', emissive:'#7733cc', emissiveIntensity:0.5}));
+    leoDie.position.set(0, 0.22, 0);
+    scene.add(leoDie);
+    var leoGlow = makeGlow('#c77dff', 0.9, 3.0);
+    leoGlow.position.set(0, 0.4, 0);
+    scene.add(leoGlow);
+
+    /* 3 Leo torus rings */
+    var leoToruses = [];
+    [0.55, 0.7, 0.85].forEach(function(rad, idx){
+      var t = new THREE.Mesh(new THREE.TorusGeometry(rad, 0.015, 8, 36), new THREE.MeshStandardMaterial({color:'#c77dff', emissive:'#c77dff', emissiveIntensity:0.5, transparent:true, opacity:0.5 + idx*0.1}));
+      t.position.set(0, 0.25, 0);
+      t.rotation.x = Math.PI/2 + idx*0.25;
+      scene.add(t);
+      leoToruses.push(t);
+    });
+
+    /* Extended Memory Bank - 6 DIMMs (3x2 grid) */
+    for(var row = 0; row < 3; row++){
+      for(var col = 0; col < 2; col++){
+        var ex = 3.6 + row * 0.45;
+        var ez = -0.35 + col * 0.7;
+        makeDIMM(ex, 0.72, ez, '#5a2048');
+      }
+    }
+    var extGlow = makeGlow('#ff55aa', 0.6, 3.0);
+    extGlow.position.set(4.2, 0.8, 0);
+    scene.add(extGlow);
+
+    /* CXL bus tube (CPU -> Leo) */
+    var cxlCurve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(-2.8, 0.15, 0),
+      new THREE.Vector3(-1.4, 0.35, 0),
+      new THREE.Vector3(-0.65, 0.15, 0)
+    ]);
+    var cxlTube = new THREE.Mesh(
+      new THREE.TubeGeometry(cxlCurve, 20, 0.06, 8, false),
+      new THREE.MeshStandardMaterial({color:'#9955ff', emissive:'#9955ff', emissiveIntensity:0.3, transparent:true, opacity:0.6})
+    );
+    scene.add(cxlTube);
+
+    /* Ext bus tube (Leo -> memory) */
+    var extCurve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(0.65, 0.15, 0),
+      new THREE.Vector3(1.8, 0.35, 0),
+      new THREE.Vector3(3.3, 0.15, 0)
+    ]);
+    var extTube = new THREE.Mesh(
+      new THREE.TubeGeometry(extCurve, 20, 0.06, 8, false),
+      new THREE.MeshStandardMaterial({color:'#ff55aa', emissive:'#ff55aa', emissiveIntensity:0.3, transparent:true, opacity:0.55})
+    );
+    scene.add(extTube);
+
+    /* DDR5 lines (CPU -> local DIMMs) */
+    [0.55, -0.55].forEach(function(z){
+      var ddrGeo = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(-2.8, 0.22, 0),
+        new THREE.Vector3(-2.4, 0.45, z*0.5),
+        new THREE.Vector3(-2.1, 0.65, z)
+      ]);
+      var ddrMat = new THREE.LineBasicMaterial({color:'#4488ff', transparent:true, opacity:0.5});
+      scene.add(new THREE.Line(ddrGeo, ddrMat));
+    });
+
+    /* Memory fill bar */
+    var fillBarBg = new THREE.Mesh(new THREE.BoxGeometry(2.0, 0.08, 0.08), new THREE.MeshStandardMaterial({color:'#221133', transparent:true, opacity:0.5}));
+    fillBarBg.position.set(4.05, 1.6, 0);
+    scene.add(fillBarBg);
+    var fillBar = new THREE.Mesh(new THREE.BoxGeometry(0.01, 0.07, 0.07), new THREE.MeshStandardMaterial({color:'#ff55aa', emissive:'#ff55aa', emissiveIntensity:0.6}));
+    fillBar.position.set(3.05, 1.6, 0);
+    scene.add(fillBar);
+    var fillAmount = 0;
+
+    /* Particles */
+    var lParticles = [];
+    var lSpawnTimer = 0;
+
+    var particleTypes = [
+      {name:'cpu-leo', curve:cxlCurve, color:'#9955ff', dir:1},
+      {name:'leo-ext', curve:extCurve, color:'#ff55aa', dir:1},
+      {name:'ext-leo', curve:extCurve, color:'#ff55aa', dir:-1},
+      {name:'cpu-local', color:'#4488ff', dir:1}
+    ];
+
+    function spawnLeoParticle(){
+      var typeIdx = rndInt(0, 3);
+      var type = particleTypes[typeIdx];
+      var pair = makePair(type.color, 0.15);
+      scene.add(pair.mesh);
+
+      if(type.name === 'cpu-local'){
+        var targetZ = Math.random() < 0.5 ? 0.55 : -0.55;
+        lParticles.push({pair:pair, type:type, t:0, speed:rnd(0.6,1.0), targetZ:targetZ});
+      } else {
+        lParticles.push({pair:pair, type:type, t:0, speed:rnd(0.5,0.9)});
+      }
+    }
+
+    var lCamAngle = 0;
+    UPDATES['leo'] = function(dt){
+      lSpawnTimer += dt;
+      if(lSpawnTimer > 0.5){ lSpawnTimer = 0; spawnLeoParticle(); }
+
+      /* Rotate Leo toruses */
+      leoToruses.forEach(function(t, idx){
+        t.rotation.z += dt * (0.8 + idx * 0.3);
+      });
+
+      /* Fill bar */
+      fillAmount += dt * 0.03;
+      if(fillAmount > 1) fillAmount = 0;
+      var barW = fillAmount * 2.0;
+      fillBar.scale.x = barW / 0.01;
+      fillBar.position.x = 3.05 + barW / 2;
+
+      for(var i = lParticles.length - 1; i >= 0; i--){
+        var p = lParticles[i];
+        p.t += p.speed * dt;
+
+        if(p.type.name === 'cpu-local'){
+          var prog = clamp(p.t, 0, 1);
+          var px = lerp(-2.8, -2.1, prog);
+          var py = lerp(0.22, 0.65, prog);
+          var pz = lerp(0, p.targetZ, prog);
+          p.pair.mesh.position.set(px, py, pz);
+        } else if(p.type.dir === 1){
+          var prog2 = clamp(p.t, 0, 1);
+          var pos = p.type.curve.getPoint(prog2);
+          p.pair.mesh.position.copy(pos);
+        } else {
+          /* reverse direction */
+          var prog3 = clamp(1 - p.t, 0, 1);
+          var pos2 = p.type.curve.getPoint(prog3);
+          p.pair.mesh.position.copy(pos2);
+        }
+
+        if(p.t >= 1.0){
+          scene.remove(p.pair.mesh);
+          lParticles.splice(i, 1);
+        }
+      }
+
+      lCamAngle += dt * 0.1;
+      camera.position.x = 0.5 + Math.sin(lCamAngle) * 7;
+      camera.position.z = Math.cos(lCamAngle) * 7;
+      camera.position.y = 3;
+      camera.lookAt(0.5, 0.4, 0);
+
+      renderer.render(scene, camera);
+    };
+  })();
+
+})();
+});
+</script>
+</body>
+</html>
