@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vera Rubin — 次世代AIの心臓部 | NVIDIA 3D Visualization</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@300;400;700&display=swap');
+:root{
+  --bg:#080c12;--panel:#0c1420;--border:rgba(230,57,70,.15);
+  --nv-green:#76B900;--ruby:#e63946;--blue:#00aaff;--cyan:#00e5ff;--gold:#ffaa00;
+  --text:rgba(255,255,255,.88);--dim:rgba(255,255,255,.4);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans JP','Space Mono',sans-serif;line-height:1.7;overflow-x:hidden}
+.header{text-align:center;padding:60px 20px 40px;border-bottom:1px solid var(--border)}
+.eyebrow{font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:4px;color:var(--ruby);text-transform:uppercase;margin-bottom:12px}
+.header h1{font-size:clamp(1.8rem,5vw,3.2rem);font-weight:700;background:linear-gradient(135deg,#e63946,#76B900);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:12px}
+.header .subtitle{font-size:clamp(.85rem,2vw,1.05rem);color:var(--dim);max-width:700px;margin:0 auto;font-weight:300}
+.section{max-width:1100px;margin:0 auto;padding:60px 20px 40px}
+.sec-num{font-family:'Space Mono',monospace;font-size:.75rem;letter-spacing:3px;margin-bottom:6px}
+.sec-name{font-size:clamp(1.3rem,3.5vw,2rem);font-weight:700;margin-bottom:4px}
+.sec-tag{font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:2px;color:var(--dim);margin-bottom:24px}
+.desc-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.desc-card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:20px 22px}
+.desc-card h3{font-size:.9rem;margin-bottom:8px;font-weight:700}
+.desc-card p{font-size:.82rem;color:rgba(255,255,255,.7);line-height:1.8}
+canvas{display:block;width:100%;border-radius:10px;border:1px solid rgba(255,255,255,.06);background:#0a0a0a}
+.footer{text-align:center;padding:40px 20px 60px;font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:3px;color:var(--dim);border-top:1px solid var(--border)}
+@media(max-width:640px){
+  .desc-row{grid-template-columns:1fr}
+  .section{padding:40px 14px 30px}
+  .header{padding:40px 14px 30px}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="eyebrow">NVIDIA VERA RUBIN &middot; NEXT-GEN AI PLATFORM &middot; 2026</div>
+  <h1>Vera Rubin &mdash; 次世代AIの心臓部</h1>
+  <p class="subtitle">「GPUの次の進化」を4つのスケールで体感する &mdash; チップからラック全体まで、3Dアニメーションで解説</p>
+</div>
+
+<!-- ============ SECTION 01 ============ -->
+<div class="section">
+  <div class="sec-num" style="color:var(--ruby)">01</div>
+  <div class="sec-name" style="color:var(--ruby)">Rubin GPUチップ &mdash; 2つの頭脳が合体</div>
+  <div class="sec-tag">DUAL-DIE GPU + HBM4</div>
+  <div class="desc-row">
+    <div class="desc-card" style="border-color:rgba(230,57,70,.2)">
+      <h3 style="color:var(--ruby)">何が見えている？</h3>
+      <p>中央に2つの大きなチップ（ダイ）が並んでいます。これがRubin GPUの「2つの頭脳」です。周囲に6本のメモリタワー（HBM4）がそびえ立ち、チップとの間をデータの光が猛スピードで行き来しています。1秒間に22テラバイト &mdash; ブルーレイディスク440枚分のデータが流れます。</p>
+    </div>
+    <div class="desc-card" style="border-color:rgba(230,57,70,.2)">
+      <h3 style="color:var(--ruby)">なぜ2つに分けるの？</h3>
+      <p>半導体チップは大きくなるほど製造が難しくなります。そこでRubinは「頭脳を2つに分けて横に並べる」設計を採用。2つ合わせて3,360億個のトランジスタ &mdash; これは人間の脳のシナプスに匹敵する数です。分けることで製造成功率が上がり、性能も倍増する一石二鳥の設計です。</p>
+    </div>
+  </div>
+  <canvas id="scene1" height="340"></canvas>
+</div>
+
+<!-- ============ SECTION 02 ============ -->
+<div class="section">
+  <div class="sec-num" style="color:var(--nv-green)">02</div>
+  <div class="sec-name" style="color:var(--nv-green)">スーパーチップ &mdash; CPUとGPUの最強タッグ</div>
+  <div class="sec-tag">VERA CPU + RUBIN GPU SUPERCHIP</div>
+  <div class="desc-row">
+    <div class="desc-card" style="border-color:rgba(118,185,0,.2)">
+      <h3 style="color:var(--nv-green)">何が見えている？</h3>
+      <p>左に「司令塔」（Vera CPU &mdash; 88コアの頭脳）、右に「計算工場」（Rubin GPU）。この2つが超高速の専用通路で直結され、1つの「スーパーチップ」として動作します。CPUが「何をどの順番で処理するか」を指示し、GPUが「膨大な計算を一気にこなす」分業体制です。</p>
+    </div>
+    <div class="desc-card" style="border-color:rgba(118,185,0,.2)">
+      <h3 style="color:var(--nv-green)">日常に例えると？</h3>
+      <p>レストランに例えると、CPUは「料理長」、GPUは「100人の調理スタッフ」です。料理長がメニューを決めて指示を出し、スタッフが一斉に料理を作る。Vera Rubinのスーパーチップは、料理長とスタッフが同じキッチンの隣同士に立っているようなもの &mdash; 指示の伝達が一瞬で、料理（AI処理）が驚くほど速く完成します。</p>
+    </div>
+  </div>
+  <canvas id="scene2" height="340"></canvas>
+</div>
+
+<!-- ============ SECTION 03 ============ -->
+<div class="section">
+  <div class="sec-num" style="color:var(--gold)">03</div>
+  <div class="sec-name" style="color:var(--gold)">NVLink 6 &mdash; GPU同士をつなぐ超高速道路</div>
+  <div class="sec-tag">3.6 TB/s GPU-TO-GPU FABRIC</div>
+  <div class="desc-row">
+    <div class="desc-card" style="border-color:rgba(255,170,0,.2)">
+      <h3 style="color:var(--gold)">何が見えている？</h3>
+      <p>複数のGPUチップ（光る四角）が輪になって並び、すべてが金色の「高速道路」で互いにつながっています。どのGPUからどのGPUへも直接データを送れる「全員がつながった通信網」です。1本の道路で毎秒3.6テラバイト &mdash; 高画質映画72万本分のデータが1秒で送れます。</p>
+    </div>
+    <div class="desc-card" style="border-color:rgba(255,170,0,.2)">
+      <h3 style="color:var(--gold)">前世代との違いは？</h3>
+      <p>前世代のBlackwellは毎秒1.8テラバイトだったので、Rubinは「道路の車線数が倍」になったイメージです。さらに新機能として、道路自体に「交通整理AI」が内蔵され、データの渋滞を自動回避します。これにより72基のGPUが1つの巨大な頭脳として一体動作できます。</p>
+    </div>
+  </div>
+  <canvas id="scene3" height="360"></canvas>
+</div>
+
+<!-- ============ SECTION 04 ============ -->
+<div class="section">
+  <div class="sec-num" style="color:var(--blue)">04</div>
+  <div class="sec-name" style="color:var(--blue)">NVL72ラック &mdash; 1,300個のチップが織りなすAI工場</div>
+  <div class="sec-tag">72 GPUs &middot; 36 CPUs &middot; 1,300 CHIPS</div>
+  <div class="desc-row">
+    <div class="desc-card" style="border-color:rgba(0,170,255,.2)">
+      <h3 style="color:var(--blue)">何が見えている？</h3>
+      <p>巨大なサーバーラック（冷蔵庫サイズの筐体）の中に、18枚の「トレイ」がスライド式で収まっています。各トレイに4基のGPU + 2基のCPU + ネットワークチップが搭載され、合計72基のGPUが1つのラックに詰め込まれています。全チップが光の粒子で連携し、1つの巨大AIとして動作します。</p>
+    </div>
+    <div class="desc-card" style="border-color:rgba(0,170,255,.2)">
+      <h3 style="color:var(--blue)">どれくらいすごいの？</h3>
+      <p>このラック1台で、毎秒数京回（数千兆回）の計算が可能。ChatGPTのような大規模AIモデルのトレーニングを、従来の数分の1の時間で完了できます。しかも「トレイを引き出すだけ」で部品交換ができるモジュール設計。1,300個のチップが協調して動く、世界最先端のAI工場です。</p>
+    </div>
+  </div>
+  <canvas id="scene4" height="380"></canvas>
+</div>
+
+<div class="footer">
+  NVIDIA VERA RUBIN &middot; NEXT-GEN AI PLATFORM &middot; THREE.JS r128 &middot; 3D VISUALIZATION &middot; 2026
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+  onerror="var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js';s.onerror=function(){document.body.innerHTML='<div style=color:red;padding:40px;font-size:18px>Three.js の読み込みに失敗しました</div>'};document.head.appendChild(s)"></script>
+
+<script>
+window.addEventListener('load', function(){
+  /* ========== UTILITIES ========== */
+  function lerp(a,b,t){return a+(b-a)*t}
+  function clamp(v,mn,mx){return Math.max(mn,Math.min(mx,v))}
+  function rnd(mn,mx){return Math.random()*(mx-mn)+mn}
+  function rndInt(mn,mx){return Math.floor(rnd(mn,mx+1))}
+
+  var updates = [];
+  var clock = new THREE.Clock();
+  var resizables = [];
+
+  /* Shared glow texture */
+  function makeGlowTexture(){
+    var c = document.createElement('canvas');
+    c.width = 64; c.height = 64;
+    var ctx = c.getContext('2d');
+    var g = ctx.createRadialGradient(32,32,0,32,32,32);
+    g.addColorStop(0,'rgba(255,255,255,1)');
+    g.addColorStop(0.3,'rgba(255,255,255,0.6)');
+    g.addColorStop(0.7,'rgba(255,255,255,0.15)');
+    g.addColorStop(1,'rgba(255,255,255,0)');
+    ctx.fillStyle = g;
+    ctx.fillRect(0,0,64,64);
+    var tex = new THREE.CanvasTexture(c);
+    return tex;
+  }
+  var glowTex = makeGlowTexture();
+
+  function makeGlow(color, opacity, size){
+    var mat = new THREE.SpriteMaterial({
+      map: glowTex,
+      color: new THREE.Color(color),
+      transparent: true,
+      opacity: opacity,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+    var sprite = new THREE.Sprite(mat);
+    sprite.scale.set(size,size,1);
+    return sprite;
+  }
+
+  function makePair(color, radius){
+    var geo = new THREE.SphereGeometry(radius, 12, 12);
+    var mat = new THREE.MeshStandardMaterial({color:color, emissive:color, emissiveIntensity:0.8});
+    var mesh = new THREE.Mesh(geo, mat);
+    var glow = makeGlow(color, 0.6, radius*7);
+    mesh.add(glow);
+    return {mesh:mesh, glow:glow};
+  }
+
+  function setupRenderer(id){
+    var canvas = document.getElementById(id);
+    var w = canvas.clientWidth;
+    var h = canvas.clientHeight;
+    var renderer = new THREE.WebGLRenderer({canvas:canvas, antialias:true, alpha:false});
+    renderer.setSize(w, h);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    return {renderer:renderer, w:w, h:h};
+  }
+
+  function addLights(scene){
+    var amb = new THREE.AmbientLight(0xffffff, 1.5);
+    scene.add(amb);
+    var d1 = new THREE.DirectionalLight(0xffffff, 0.9);
+    d1.position.set(5,8,5);
+    scene.add(d1);
+    var d2 = new THREE.DirectionalLight(0x8888ff, 0.5);
+    d2.position.set(-5,3,-5);
+    scene.add(d2);
+    var d3 = new THREE.DirectionalLight(0xffffff, 0.6);
+    d3.position.set(0,5,-8);
+    scene.add(d3);
+  }
+
+  function makeGrid(scene, size, divisions, color){
+    var grid = new THREE.GridHelper(size, divisions, color, color);
+    grid.material.transparent = true;
+    grid.material.opacity = 0.15;
+    scene.add(grid);
+    return grid;
+  }
+
+  /* ========== SCENE 1: DUAL-DIE GPU + HBM4 ========== */
+  (function(){
+    var setup = setupRenderer('scene1');
+    var renderer = setup.renderer;
+    var scene = new THREE.Scene();
+    scene.background = new THREE.Color('#120a0e');
+    scene.fog = new THREE.Fog('#120a0e', 18, 35);
+
+    var camera = new THREE.PerspectiveCamera(45, setup.w/setup.h, 0.1, 100);
+    camera.position.set(0, 6, 10);
+    camera.lookAt(0,0,0);
+
+    resizables.push({renderer:renderer, camera:camera, canvas:document.getElementById('scene1')});
+
+    addLights(scene);
+    var ptLight = new THREE.PointLight(0xe63946, 1.5, 20);
+    ptLight.position.set(0,3,0);
+    scene.add(ptLight);
+
+    makeGrid(scene, 16, 20, 0xe63946);
+
+    // Two GPU dies
+    var dieMat = new THREE.MeshStandardMaterial({
+      color:0x1a0a10, emissive:0xe63946, emissiveIntensity:0.3,
+      metalness:0.7, roughness:0.3
+    });
+    var dieGeo = new THREE.BoxGeometry(2.2, 0.35, 2.2);
+    var die1 = new THREE.Mesh(dieGeo, dieMat);
+    die1.position.set(-1.3, 0.175, 0);
+    scene.add(die1);
+    var dieGlow1 = makeGlow('#e63946', 0.5, 4);
+    dieGlow1.position.set(-1.3, 0.5, 0);
+    scene.add(dieGlow1);
+
+    var die2 = new THREE.Mesh(dieGeo, dieMat.clone());
+    die2.position.set(1.3, 0.175, 0);
+    scene.add(die2);
+    var dieGlow2 = makeGlow('#e63946', 0.5, 4);
+    dieGlow2.position.set(1.3, 0.5, 0);
+    scene.add(dieGlow2);
+
+    // Die surface details (grid pattern)
+    for(var di=0;di<2;di++){
+      var ox = di===0 ? -1.3 : 1.3;
+      for(var gx=-0.8;gx<=0.8;gx+=0.4){
+        for(var gz=-0.8;gz<=0.8;gz+=0.4){
+          var dot = new THREE.Mesh(
+            new THREE.BoxGeometry(0.15,0.05,0.15),
+            new THREE.MeshStandardMaterial({color:0xe63946,emissive:0xe63946,emissiveIntensity:0.6})
+          );
+          dot.position.set(ox+gx,0.38,gz);
+          scene.add(dot);
+        }
+      }
+    }
+
+    // Bridge between dies
+    var bridgeGeo = new THREE.BoxGeometry(0.6, 0.15, 1.2);
+    var bridgeMat = new THREE.MeshStandardMaterial({
+      color:0xffaa00, emissive:0xffaa00, emissiveIntensity:0.7,
+      metalness:0.8, roughness:0.2
+    });
+    var bridge = new THREE.Mesh(bridgeGeo, bridgeMat);
+    bridge.position.set(0, 0.25, 0);
+    scene.add(bridge);
+    var bridgeGlow = makeGlow('#ffaa00', 0.7, 3);
+    bridgeGlow.position.set(0, 0.5, 0);
+    scene.add(bridgeGlow);
+
+    // 6 HBM4 memory towers in hexagonal pattern
+    var hbmPositions = [];
+    for(var i=0;i<6;i++){
+      var angle = (i/6)*Math.PI*2 - Math.PI/2;
+      hbmPositions.push({x: Math.cos(angle)*4.2, z: Math.sin(angle)*4.2});
+    }
+    var hbmTowers = [];
+    hbmPositions.forEach(function(pos){
+      var tower = new THREE.Group();
+      for(var layer=0;layer<5;layer++){
+        var layerMat = new THREE.MeshStandardMaterial({
+          color:0x004455, emissive:0x00e5ff, emissiveIntensity:0.4,
+          metalness:0.6, roughness:0.3, transparent:true, opacity:0.85
+        });
+        var layerMesh = new THREE.Mesh(new THREE.BoxGeometry(0.7,0.25,0.7), layerMat);
+        layerMesh.position.y = layer*0.32 + 0.125;
+        tower.add(layerMesh);
+      }
+      var tGlow = makeGlow('#00e5ff', 0.6, 3.5);
+      tGlow.position.y = 1.0;
+      tower.add(tGlow);
+      tower.position.set(pos.x, 0, pos.z);
+      scene.add(tower);
+      hbmTowers.push(tower);
+    });
+
+    // Data flow particles: GPU ↔ HBM
+    var dataParticles = [];
+    for(var pi=0;pi<120;pi++){
+      var hbmIdx = pi % 6;
+      var hbmPos = hbmPositions[hbmIdx];
+      var dieIdx = pi % 2;
+      var dieX = dieIdx === 0 ? -1.3 : 1.3;
+      var pair = makePair(0x00e5ff, 0.12);
+      scene.add(pair.mesh);
+      dataParticles.push({
+        mesh: pair.mesh,
+        t: rnd(0,1),
+        speed: rnd(0.4, 0.9),
+        fromX: dieX, fromZ: 0,
+        toX: hbmPos.x, toZ: hbmPos.z,
+        direction: Math.random() > 0.5 ? 1 : -1,
+        yOff: rnd(0.3, 1.2)
+      });
+    }
+
+    // Bridge particles (gold, between dies)
+    var bridgeParticles = [];
+    for(var bi=0;bi<20;bi++){
+      var bp = makePair(0xffaa00, 0.1);
+      scene.add(bp.mesh);
+      bridgeParticles.push({
+        mesh: bp.mesh,
+        t: rnd(0,1),
+        speed: rnd(0.8,1.5),
+        zOff: rnd(-0.4, 0.4)
+      });
+    }
+
+    var camAngle1 = 0;
+    updates.push(function(dt){
+      camAngle1 += dt * 0.15;
+      camera.position.x = Math.sin(camAngle1) * 10;
+      camera.position.z = Math.cos(camAngle1) * 10;
+      camera.position.y = 5 + Math.sin(camAngle1*0.5)*1;
+      camera.lookAt(0, 0.5, 0);
+
+      // Data particles
+      dataParticles.forEach(function(p){
+        p.t += p.speed * dt * p.direction;
+        if(p.t > 1){ p.t = 1; p.direction = -1; }
+        if(p.t < 0){ p.t = 0; p.direction = 1; }
+        var t = p.t;
+        var midX = (p.fromX + p.toX)*0.5;
+        var midZ = (p.fromZ + p.toZ)*0.5;
+        var cx = midX + (p.toZ - p.fromZ)*0.15;
+        var cz = midZ - (p.toX - p.fromX)*0.15;
+        var omt = 1-t;
+        p.mesh.position.x = omt*omt*p.fromX + 2*omt*t*cx + t*t*p.toX;
+        p.mesh.position.z = omt*omt*p.fromZ + 2*omt*t*cz + t*t*p.toZ;
+        p.mesh.position.y = p.yOff + Math.sin(t*Math.PI)*1.2;
+      });
+
+      // Bridge particles
+      bridgeParticles.forEach(function(p){
+        p.t += p.speed * dt;
+        if(p.t > 1) p.t -= 1;
+        p.mesh.position.x = lerp(-1.3, 1.3, p.t);
+        p.mesh.position.y = 0.3 + Math.sin(p.t*Math.PI)*0.3;
+        p.mesh.position.z = p.zOff;
+      });
+
+      renderer.render(scene, camera);
+    });
+  })();
+
+  /* ========== SCENE 2: SUPERCHIP ========== */
+  (function(){
+    var setup = setupRenderer('scene2');
+    var renderer = setup.renderer;
+    var scene = new THREE.Scene();
+    scene.background = new THREE.Color('#0a1408');
+    scene.fog = new THREE.Fog('#0a1408', 18, 35);
+
+    var camera = new THREE.PerspectiveCamera(45, setup.w/setup.h, 0.1, 100);
+    camera.position.set(3, 5, 10);
+    camera.lookAt(0,0,0);
+
+    resizables.push({renderer:renderer, camera:camera, canvas:document.getElementById('scene2')});
+
+    addLights(scene);
+    var ptLight = new THREE.PointLight(0x76B900, 1.2, 20);
+    ptLight.position.set(0,3,0);
+    scene.add(ptLight);
+
+    makeGrid(scene, 16, 20, 0x76B900);
+
+    // Substrate
+    var substrate = new THREE.Mesh(
+      new THREE.BoxGeometry(10, 0.12, 5),
+      new THREE.MeshStandardMaterial({color:0x0a1a0a, emissive:0x76B900, emissiveIntensity:0.05, metalness:0.5, roughness:0.6})
+    );
+    substrate.position.y = -0.06;
+    scene.add(substrate);
+
+    // CPU block (left)
+    var cpuMat = new THREE.MeshStandardMaterial({
+      color:0x1a2a0a, emissive:0x76B900, emissiveIntensity:0.35,
+      metalness:0.7, roughness:0.3
+    });
+    var cpu = new THREE.Mesh(new THREE.BoxGeometry(2.5, 0.4, 2.5), cpuMat);
+    cpu.position.set(-3, 0.2, 0);
+    scene.add(cpu);
+    var cpuGlow = makeGlow('#76B900', 0.5, 5);
+    cpuGlow.position.set(-3, 0.6, 0);
+    scene.add(cpuGlow);
+
+    // CPU cores (88 dots in grid)
+    var coreCount = 0;
+    for(var cx=-1.0;cx<=1.0;cx+=0.23){
+      for(var cz=-1.0;cz<=1.0;cz+=0.23){
+        if(coreCount >= 88) break;
+        var coreDot = new THREE.Mesh(
+          new THREE.BoxGeometry(0.1,0.08,0.1),
+          new THREE.MeshStandardMaterial({color:0x76B900, emissive:0x76B900, emissiveIntensity:0.9})
+        );
+        coreDot.position.set(-3+cx, 0.44, cz);
+        scene.add(coreDot);
+        coreCount++;
+      }
+    }
+
+    // GPU block (right) — larger, with 2 sub-dies
+    var gpuMat = new THREE.MeshStandardMaterial({
+      color:0x1a0a10, emissive:0xe63946, emissiveIntensity:0.3,
+      metalness:0.7, roughness:0.3
+    });
+    var gpu = new THREE.Mesh(new THREE.BoxGeometry(3.5, 0.4, 2.5), gpuMat);
+    gpu.position.set(2.5, 0.2, 0);
+    scene.add(gpu);
+    var gpuGlow = makeGlow('#e63946', 0.5, 5);
+    gpuGlow.position.set(2.5, 0.6, 0);
+    scene.add(gpuGlow);
+
+    // GPU sub-die lines
+    var divider = new THREE.Mesh(
+      new THREE.BoxGeometry(0.06, 0.08, 2.3),
+      new THREE.MeshStandardMaterial({color:0xffaa00, emissive:0xffaa00, emissiveIntensity:0.8})
+    );
+    divider.position.set(2.5, 0.45, 0);
+    scene.add(divider);
+
+    // GPU surface detail
+    for(var gx=-1.4;gx<=1.4;gx+=0.35){
+      for(var gz=-1.0;gz<=1.0;gz+=0.35){
+        var gDot = new THREE.Mesh(
+          new THREE.BoxGeometry(0.12,0.06,0.12),
+          new THREE.MeshStandardMaterial({color:0xe63946, emissive:0xe63946, emissiveIntensity:0.5})
+        );
+        gDot.position.set(2.5+gx, 0.44, gz);
+        scene.add(gDot);
+      }
+    }
+
+    // Interconnect bridge (center)
+    var interBridge = new THREE.Mesh(
+      new THREE.BoxGeometry(1.8, 0.25, 0.8),
+      new THREE.MeshStandardMaterial({
+        color:0x335500, emissive:0x76B900, emissiveIntensity:0.6,
+        metalness:0.8, roughness:0.2
+      })
+    );
+    interBridge.position.set(-0.25, 0.2, 0);
+    scene.add(interBridge);
+    var interGlow = makeGlow('#76B900', 0.7, 4);
+    interGlow.position.set(-0.25, 0.5, 0);
+    scene.add(interGlow);
+
+    // Small memory blocks on sides
+    var memBlocks = [];
+    var memPositions = [{x:2.5,z:2.2},{x:2.5,z:-2.2},{x:4.5,z:1.5},{x:4.5,z:-1.5}];
+    memPositions.forEach(function(mp){
+      var mem = new THREE.Mesh(
+        new THREE.BoxGeometry(0.6, 0.7, 0.6),
+        new THREE.MeshStandardMaterial({color:0x004455, emissive:0x00e5ff, emissiveIntensity:0.4})
+      );
+      mem.position.set(mp.x, 0.35, mp.z);
+      scene.add(mem);
+      memBlocks.push(mem);
+      var mGlow = makeGlow('#00e5ff', 0.4, 2);
+      mGlow.position.set(mp.x, 0.7, mp.z);
+      scene.add(mGlow);
+    });
+
+    // Data particles: CPU→GPU (green) and GPU→CPU (blue)
+    var particles2 = [];
+    for(var pi=0;pi<60;pi++){
+      var isGreen = pi < 30;
+      var color = isGreen ? 0x76B900 : 0x00aaff;
+      var pair = makePair(color, 0.12);
+      scene.add(pair.mesh);
+      particles2.push({
+        mesh: pair.mesh,
+        t: rnd(0,1),
+        speed: rnd(0.5, 1.2),
+        isGreen: isGreen,
+        zOff: rnd(-0.3, 0.3),
+        yOff: rnd(0.3, 0.6)
+      });
+    }
+
+    // GPU→Memory particles
+    var memParticles = [];
+    for(var mi=0;mi<24;mi++){
+      var mp2 = memPositions[mi%4];
+      var pair2 = makePair(0x00e5ff, 0.08);
+      scene.add(pair2.mesh);
+      memParticles.push({
+        mesh: pair2.mesh,
+        t: rnd(0,1),
+        speed: rnd(0.4, 0.8),
+        tx: mp2.x, tz: mp2.z
+      });
+    }
+
+    var camAngle2 = 0;
+    updates.push(function(dt){
+      camAngle2 += dt * 0.12;
+      camera.position.x = Math.sin(camAngle2)*9 + 1;
+      camera.position.z = Math.cos(camAngle2)*9;
+      camera.position.y = 4.5 + Math.sin(camAngle2*0.3)*0.5;
+      camera.lookAt(0, 0.3, 0);
+
+      particles2.forEach(function(p){
+        p.t += p.speed * dt;
+        if(p.t > 1) p.t -= 1;
+        var fromX = p.isGreen ? -3 : 2.5;
+        var toX = p.isGreen ? 2.5 : -3;
+        p.mesh.position.x = lerp(fromX, toX, p.t);
+        p.mesh.position.y = p.yOff + Math.sin(p.t * Math.PI) * 0.8;
+        p.mesh.position.z = p.zOff;
+      });
+
+      memParticles.forEach(function(p){
+        p.t += p.speed * dt;
+        if(p.t > 1) p.t -= 1;
+        p.mesh.position.x = lerp(2.5, p.tx, p.t);
+        p.mesh.position.z = lerp(0, p.tz, p.t);
+        p.mesh.position.y = 0.5 + Math.sin(p.t * Math.PI) * 0.5;
+      });
+
+      renderer.render(scene, camera);
+    });
+  })();
+
+  /* ========== SCENE 3: NVLink 6 ========== */
+  (function(){
+    var setup = setupRenderer('scene3');
+    var renderer = setup.renderer;
+    var scene = new THREE.Scene();
+    scene.background = new THREE.Color('#12100a');
+    scene.fog = new THREE.Fog('#12100a', 20, 40);
+
+    var camera = new THREE.PerspectiveCamera(45, setup.w/setup.h, 0.1, 100);
+    camera.position.set(0, 9, 9);
+    camera.lookAt(0,0,0);
+
+    resizables.push({renderer:renderer, camera:camera, canvas:document.getElementById('scene3')});
+
+    addLights(scene);
+    var ptLight = new THREE.PointLight(0xffaa00, 1.5, 25);
+    ptLight.position.set(0,4,0);
+    scene.add(ptLight);
+
+    makeGrid(scene, 18, 24, 0xffaa00);
+
+    // 8 GPUs in octagonal ring
+    var gpuNodes = [];
+    var radius3 = 4.5;
+    for(var i=0;i<8;i++){
+      var angle = (i/8)*Math.PI*2;
+      var x = Math.cos(angle)*radius3;
+      var z = Math.sin(angle)*radius3;
+      var h = 0.3 + (i%3)*0.08;
+      var gpuBlock = new THREE.Mesh(
+        new THREE.BoxGeometry(1.2, h, 1.2),
+        new THREE.MeshStandardMaterial({
+          color:0x1a0a10, emissive:0xe63946, emissiveIntensity:0.4,
+          metalness:0.7, roughness:0.3
+        })
+      );
+      gpuBlock.position.set(x, h/2, z);
+      scene.add(gpuBlock);
+
+      var gGlow = makeGlow('#e63946', 0.6, 3);
+      gGlow.position.set(x, h+0.3, z);
+      scene.add(gGlow);
+
+      // Surface details
+      for(var dx=-0.3;dx<=0.3;dx+=0.3){
+        for(var dz=-0.3;dz<=0.3;dz+=0.3){
+          var sd = new THREE.Mesh(
+            new THREE.BoxGeometry(0.1,0.04,0.1),
+            new THREE.MeshStandardMaterial({color:0xe63946,emissive:0xe63946,emissiveIntensity:0.7})
+          );
+          sd.position.set(x+dx, h+0.02, z+dz);
+          scene.add(sd);
+        }
+      }
+
+      gpuNodes.push({x:x, z:z, h:h});
+    }
+
+    // Central fabric hub (golden torus)
+    var torusGeo = new THREE.TorusGeometry(1.2, 0.15, 16, 40);
+    var torusMat = new THREE.MeshStandardMaterial({
+      color:0xffaa00, emissive:0xffaa00, emissiveIntensity:0.7,
+      metalness:0.9, roughness:0.1
+    });
+    var torus = new THREE.Mesh(torusGeo, torusMat);
+    torus.rotation.x = Math.PI/2;
+    torus.position.y = 0.6;
+    scene.add(torus);
+    var torusGlow = makeGlow('#ffaa00', 0.8, 6);
+    torusGlow.position.y = 0.6;
+    scene.add(torusGlow);
+
+    // Inner torus
+    var torus2 = new THREE.Mesh(
+      new THREE.TorusGeometry(0.6, 0.08, 12, 30),
+      new THREE.MeshStandardMaterial({color:0xffdd44, emissive:0xffdd44, emissiveIntensity:0.6})
+    );
+    torus2.rotation.x = Math.PI/2;
+    torus2.position.y = 0.6;
+    scene.add(torus2);
+
+    // Connection tubes (ring connections + cross connections)
+    var connections = [];
+    // Ring connections
+    for(var i=0;i<8;i++){
+      var j = (i+1)%8;
+      connections.push([i,j]);
+    }
+    // Cross connections (diameter)
+    connections.push([0,4],[1,5],[2,6],[3,7]);
+    // Skip-one connections
+    connections.push([0,2],[2,4],[4,6],[6,0]);
+
+    // Draw tubes
+    connections.forEach(function(conn){
+      var a = gpuNodes[conn[0]];
+      var b = gpuNodes[conn[1]];
+      var points = [];
+      var segments = 20;
+      for(var s=0;s<=segments;s++){
+        var t = s/segments;
+        var px = lerp(a.x, b.x, t);
+        var pz = lerp(a.z, b.z, t);
+        // Curve through center slightly for cross connections
+        var distFromCenter = Math.sqrt(px*px + pz*pz);
+        var lift = Math.sin(t*Math.PI) * 0.8;
+        points.push(new THREE.Vector3(px, 0.3+lift, pz));
+      }
+      var curve = new THREE.CatmullRomCurve3(points);
+      var tubeGeo = new THREE.TubeGeometry(curve, 20, 0.04, 8, false);
+      var tubeMat = new THREE.MeshStandardMaterial({
+        color:0xffaa00, emissive:0xffaa00, emissiveIntensity:0.5,
+        transparent:true, opacity:0.6
+      });
+      var tube = new THREE.Mesh(tubeGeo, tubeMat);
+      scene.add(tube);
+    });
+
+    // Comparison: Blackwell dim tube vs Rubin bright tube
+    var compY = -0.3;
+    // Dim (Blackwell)
+    var dimTube = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.03, 0.03, 2.5, 8),
+      new THREE.MeshStandardMaterial({color:0x664400, emissive:0x664400, emissiveIntensity:0.15, transparent:true, opacity:0.4})
+    );
+    dimTube.rotation.z = Math.PI/2;
+    dimTube.position.set(radius3+1.8, 0.3, -2.5);
+    scene.add(dimTube);
+    // Bright (Rubin)
+    var brightTube = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.08, 0.08, 2.5, 8),
+      new THREE.MeshStandardMaterial({color:0xffaa00, emissive:0xffaa00, emissiveIntensity:0.7})
+    );
+    brightTube.rotation.z = Math.PI/2;
+    brightTube.position.set(radius3+1.8, 0.3, -1.8);
+    scene.add(brightTube);
+    var btGlow = makeGlow('#ffaa00', 0.5, 2);
+    btGlow.position.set(radius3+1.8, 0.5, -1.8);
+    scene.add(btGlow);
+
+    // Data particles along connections
+    var linkParticles = [];
+    for(var lp=0;lp<160;lp++){
+      var connIdx = lp % connections.length;
+      var conn = connections[connIdx];
+      var a = gpuNodes[conn[0]];
+      var b = gpuNodes[conn[1]];
+      var pair = makePair(0xffaa00, 0.1);
+      scene.add(pair.mesh);
+      linkParticles.push({
+        mesh: pair.mesh,
+        t: rnd(0,1),
+        speed: rnd(0.3, 0.8),
+        ax: a.x, az: a.z,
+        bx: b.x, bz: b.z
+      });
+    }
+
+    // Hub particles
+    var hubParticles = [];
+    for(var hp=0;hp<30;hp++){
+      var hpair = makePair(0xffdd44, 0.08);
+      scene.add(hpair.mesh);
+      hubParticles.push({
+        mesh: hpair.mesh,
+        angle: rnd(0, Math.PI*2),
+        speed: rnd(1.5, 3),
+        radius: rnd(0.5, 1.3),
+        yOff: rnd(0.4, 0.8)
+      });
+    }
+
+    var camAngle3 = 0;
+    updates.push(function(dt){
+      camAngle3 += dt * 0.1;
+      camera.position.x = Math.sin(camAngle3) * 11;
+      camera.position.z = Math.cos(camAngle3) * 11;
+      camera.position.y = 7 + Math.sin(camAngle3*0.4)*1.5;
+      camera.lookAt(0, 0.3, 0);
+
+      torus.rotation.z += dt * 0.3;
+      torus2.rotation.z -= dt * 0.5;
+
+      linkParticles.forEach(function(p){
+        p.t += p.speed * dt;
+        if(p.t > 1) p.t -= 1;
+        var t = p.t;
+        p.mesh.position.x = lerp(p.ax, p.bx, t);
+        p.mesh.position.z = lerp(p.az, p.bz, t);
+        p.mesh.position.y = 0.3 + Math.sin(t*Math.PI)*0.8;
+      });
+
+      hubParticles.forEach(function(p){
+        p.angle += p.speed * dt;
+        p.mesh.position.x = Math.cos(p.angle) * p.radius;
+        p.mesh.position.z = Math.sin(p.angle) * p.radius;
+        p.mesh.position.y = p.yOff;
+      });
+
+      renderer.render(scene, camera);
+    });
+  })();
+
+  /* ========== SCENE 4: NVL72 RACK ========== */
+  (function(){
+    var setup = setupRenderer('scene4');
+    var renderer = setup.renderer;
+    var scene = new THREE.Scene();
+    scene.background = new THREE.Color('#080e18');
+    scene.fog = new THREE.Fog('#080e18', 20, 40);
+
+    var camera = new THREE.PerspectiveCamera(45, setup.w/setup.h, 0.1, 100);
+    camera.position.set(6, 5, 10);
+    camera.lookAt(0,1,0);
+
+    resizables.push({renderer:renderer, camera:camera, canvas:document.getElementById('scene4')});
+
+    addLights(scene);
+    var ptLight = new THREE.PointLight(0x00aaff, 1.2, 25);
+    ptLight.position.set(0,6,0);
+    scene.add(ptLight);
+    var ptLight2 = new THREE.PointLight(0xe63946, 0.8, 20);
+    ptLight2.position.set(2,3,3);
+    scene.add(ptLight2);
+
+    makeGrid(scene, 18, 24, 0x00aaff);
+
+    // Rack frame (wireframe)
+    var rackW = 5, rackH = 10, rackD = 3;
+    var frameMat = new THREE.MeshStandardMaterial({
+      color:0x334466, emissive:0x00aaff, emissiveIntensity:0.15,
+      transparent:true, opacity:0.5
+    });
+    // Vertical edges
+    var edgeGeo = new THREE.CylinderGeometry(0.06, 0.06, rackH, 8);
+    var edgePositions = [
+      [-rackW/2, rackH/2, -rackD/2],
+      [rackW/2, rackH/2, -rackD/2],
+      [-rackW/2, rackH/2, rackD/2],
+      [rackW/2, rackH/2, rackD/2]
+    ];
+    edgePositions.forEach(function(ep){
+      var edge = new THREE.Mesh(edgeGeo, frameMat);
+      edge.position.set(ep[0], ep[1], ep[2]);
+      scene.add(edge);
+    });
+    // Horizontal edges (top and bottom)
+    var hEdgeGeoW = new THREE.CylinderGeometry(0.06, 0.06, rackW, 8);
+    var hEdgeGeoD = new THREE.CylinderGeometry(0.06, 0.06, rackD, 8);
+    [0, rackH].forEach(function(y){
+      var h1 = new THREE.Mesh(hEdgeGeoW, frameMat.clone());
+      h1.rotation.z = Math.PI/2;
+      h1.position.set(0, y, -rackD/2);
+      scene.add(h1);
+      var h2 = new THREE.Mesh(hEdgeGeoW, frameMat.clone());
+      h2.rotation.z = Math.PI/2;
+      h2.position.set(0, y, rackD/2);
+      scene.add(h2);
+      var h3 = new THREE.Mesh(hEdgeGeoD, frameMat.clone());
+      h3.rotation.x = Math.PI/2;
+      h3.position.set(-rackW/2, y, 0);
+      scene.add(h3);
+      var h4 = new THREE.Mesh(hEdgeGeoD, frameMat.clone());
+      h4.rotation.x = Math.PI/2;
+      h4.position.set(rackW/2, y, 0);
+      scene.add(h4);
+    });
+
+    // 18 compute trays
+    var traySpacing = rackH / 19;
+    var trays = [];
+    var allGPUs = [];
+    var allCPUs = [];
+    for(var ti=0;ti<18;ti++){
+      var trayY = traySpacing * (ti+1);
+      var trayGroup = new THREE.Group();
+      var pullOut = (ti === 5) ? 1.8 : 0; // One tray pulled out
+
+      // Tray base
+      var trayBase = new THREE.Mesh(
+        new THREE.BoxGeometry(rackW-0.4, 0.08, rackD-0.4),
+        new THREE.MeshStandardMaterial({
+          color:0x112233, emissive:0x00aaff, emissiveIntensity:0.08,
+          metalness:0.5, roughness:0.5
+        })
+      );
+      trayGroup.add(trayBase);
+
+      // 4 GPU blocks per tray
+      var gpuPositions = [-1.5, -0.5, 0.5, 1.5];
+      gpuPositions.forEach(function(gx){
+        var gpuChip = new THREE.Mesh(
+          new THREE.BoxGeometry(0.5, 0.15, 0.5),
+          new THREE.MeshStandardMaterial({
+            color:0x3a0a10, emissive:0xe63946, emissiveIntensity:0.6,
+            metalness:0.6, roughness:0.3
+          })
+        );
+        gpuChip.position.set(gx, 0.12, 0);
+        trayGroup.add(gpuChip);
+        allGPUs.push({group:trayGroup, localX:gx, trayY:trayY, pullOut:pullOut});
+      });
+
+      // 2 CPU blocks per tray
+      [-2.0, 2.0].forEach(function(cx){
+        var cpuChip = new THREE.Mesh(
+          new THREE.BoxGeometry(0.35, 0.12, 0.35),
+          new THREE.MeshStandardMaterial({
+            color:0x0a2a0a, emissive:0x76B900, emissiveIntensity:0.6,
+            metalness:0.6, roughness:0.3
+          })
+        );
+        cpuChip.position.set(cx, 0.1, 0);
+        trayGroup.add(cpuChip);
+        allCPUs.push({group:trayGroup, localX:cx, trayY:trayY, pullOut:pullOut});
+      });
+
+      // 2 NIC blocks
+      [-2.0, 2.0].forEach(function(nx){
+        var nic = new THREE.Mesh(
+          new THREE.BoxGeometry(0.25, 0.1, 0.25),
+          new THREE.MeshStandardMaterial({
+            color:0x0a1a3a, emissive:0x00aaff, emissiveIntensity:0.6
+          })
+        );
+        nic.position.set(nx, 0.1, 0.8);
+        trayGroup.add(nic);
+      });
+
+      trayGroup.position.set(0, trayY, pullOut);
+      scene.add(trayGroup);
+      trays.push({group:trayGroup, y:trayY, pullOut:pullOut});
+    }
+
+    // Pulled-out tray glow
+    var pullGlow = makeGlow('#00aaff', 0.5, 5);
+    pullGlow.position.set(0, traySpacing*6, 2.5);
+    scene.add(pullGlow);
+
+    // Vertical NVLink backbone (golden lines)
+    var backbonePositions = [-1.5, -0.5, 0.5, 1.5];
+    backbonePositions.forEach(function(bx){
+      var bbMat = new THREE.MeshStandardMaterial({
+        color:0xffaa00, emissive:0xffaa00, emissiveIntensity:0.4,
+        transparent:true, opacity:0.5
+      });
+      var bb = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.03, 0.03, rackH-1, 8),
+        bbMat
+      );
+      bb.position.set(bx, rackH/2, -1.2);
+      scene.add(bb);
+
+      var bbGlow = makeGlow('#ffaa00', 0.3, 1.5);
+      bbGlow.position.set(bx, rackH/2, -1.2);
+      scene.add(bbGlow);
+    });
+
+    // External network tubes
+    for(var nt=0;nt<4;nt++){
+      var ny = 2 + nt*2.2;
+      var netTube = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.04, 0.04, 3, 8),
+        new THREE.MeshStandardMaterial({color:0x00aaff, emissive:0x00aaff, emissiveIntensity:0.5, transparent:true, opacity:0.6})
+      );
+      netTube.rotation.x = Math.PI/2;
+      netTube.position.set(rackW/2+0.5, ny, 0);
+      netTube.rotation.z = -0.3;
+      scene.add(netTube);
+    }
+
+    // Vertical data particles (gold, NVLink backbone)
+    var vParticles = [];
+    for(var vp=0;vp<60;vp++){
+      var vpair = makePair(0xffaa00, 0.08);
+      scene.add(vpair.mesh);
+      vParticles.push({
+        mesh: vpair.mesh,
+        x: backbonePositions[vp%4],
+        t: rnd(0,1),
+        speed: rnd(0.3,0.7),
+        dir: Math.random()>0.5?1:-1
+      });
+    }
+
+    // Horizontal data particles (blue, intra-tray)
+    var hParticles = [];
+    for(var hp=0;hp<80;hp++){
+      var trayIdx = hp%18;
+      var ty = traySpacing*(trayIdx+1);
+      var hpair = makePair(0x00aaff, 0.06);
+      scene.add(hpair.mesh);
+      var po = (trayIdx===5)?1.8:0;
+      hParticles.push({
+        mesh: hpair.mesh,
+        t: rnd(0,1),
+        speed: rnd(0.5,1.2),
+        y: ty + 0.2,
+        z: po,
+        dir: Math.random()>0.5?1:-1
+      });
+    }
+
+    // Circulating ambient particles
+    var ambientP = [];
+    for(var ap=0;ap<40;ap++){
+      var apair = makePair(ap%2===0?0x00aaff:0xe63946, 0.05);
+      scene.add(apair.mesh);
+      ambientP.push({
+        mesh: apair.mesh,
+        x: rnd(-rackW/2+0.5, rackW/2-0.5),
+        baseY: rnd(1, rackH-1),
+        z: rnd(-rackD/2+0.5, rackD/2-0.5),
+        speedY: rnd(0.3, 0.8),
+        phase: rnd(0, Math.PI*2)
+      });
+    }
+
+    var camAngle4 = 0;
+    updates.push(function(dt){
+      camAngle4 += dt * 0.08;
+      camera.position.x = Math.sin(camAngle4)*8 + 1;
+      camera.position.z = Math.cos(camAngle4)*8;
+      camera.position.y = 5 + Math.sin(camAngle4*0.3)*2;
+      camera.lookAt(0, rackH*0.45, 0);
+
+      // Vertical particles
+      vParticles.forEach(function(p){
+        p.t += p.speed * dt * p.dir;
+        if(p.t > 1){p.t=1;p.dir=-1;}
+        if(p.t < 0){p.t=0;p.dir=1;}
+        p.mesh.position.x = p.x;
+        p.mesh.position.y = lerp(0.5, rackH-0.5, p.t);
+        p.mesh.position.z = -1.2;
+      });
+
+      // Horizontal particles
+      hParticles.forEach(function(p){
+        p.t += p.speed * dt * p.dir;
+        if(p.t > 1){p.t=1;p.dir=-1;}
+        if(p.t < 0){p.t=0;p.dir=1;}
+        p.mesh.position.x = lerp(-2, 2, p.t);
+        p.mesh.position.y = p.y;
+        p.mesh.position.z = p.z;
+      });
+
+      // Ambient
+      var time = clock.getElapsedTime();
+      ambientP.forEach(function(p){
+        p.mesh.position.x = p.x + Math.sin(time*0.5+p.phase)*0.3;
+        p.mesh.position.y = p.baseY + Math.sin(time*p.speedY+p.phase)*0.8;
+        p.mesh.position.z = p.z + Math.cos(time*0.4+p.phase)*0.2;
+      });
+
+      renderer.render(scene, camera);
+    });
+  })();
+
+  /* ========== MASTER ANIMATION LOOP ========== */
+  function animate(){
+    requestAnimationFrame(animate);
+    var dt = Math.min(clock.getDelta(), 0.05);
+    for(var i=0;i<updates.length;i++){
+      updates[i](dt);
+    }
+  }
+  animate();
+
+  /* ========== RESIZE HANDLER ========== */
+  window.addEventListener('resize', function(){
+    resizables.forEach(function(r){
+      var w = r.canvas.clientWidth;
+      var h = r.canvas.clientHeight;
+      if(w===0||h===0) return;
+      r.renderer.setSize(w, h);
+      r.camera.aspect = w/h;
+      r.camera.updateProjectionMatrix();
+    });
+  });
+});
+</script>
+</body>
+</html>
